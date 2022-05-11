@@ -65,6 +65,7 @@ from ppcls.arch.backbone.model_zoo.repvgg import RepVGG_A0, RepVGG_A1, RepVGG_A2
 from ppcls.arch.backbone.variant_models.resnet_variant import ResNet50_last_stage_stride1
 from ppcls.arch.backbone.variant_models.vgg_variant import VGG19Sigmoid
 from ppcls.arch.backbone.variant_models.pp_lcnet_variant import PPLCNet_x2_5_Tanh
+from ppcls.arch.backbone.model_zoo.strongbaseline_attr import StrongBaselineAttr
 
 
 # help whl get all the models' api (class type) and components' api (func type)

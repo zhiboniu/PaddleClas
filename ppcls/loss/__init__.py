@@ -23,6 +23,7 @@ from .distillationloss import DistillationDMLLoss
 from .distillationloss import DistillationDistanceLoss
 from .distillationloss import DistillationRKDLoss
 from .multilabelloss import MultiLabelLoss
+from .bceloss import BCELoss
 
 from .deephashloss import DSHSDLoss, LCDSHLoss
 
