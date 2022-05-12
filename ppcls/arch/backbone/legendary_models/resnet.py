@@ -18,9 +18,10 @@ import numpy as np
 import paddle
 from paddle import ParamAttr
 import paddle.nn as nn
-from paddle.nn import Conv2D, BatchNorm, Linear
+from paddle.nn import Conv2D, BatchNorm, Linear, BatchNorm2D
 from paddle.nn import AdaptiveAvgPool2D, MaxPool2D, AvgPool2D
 from paddle.nn.initializer import Uniform
+from paddle.regularizer import L2Decay
 import math
 
 from ppcls.arch.backbone.base.theseus_layer import TheseusLayer
@@ -111,6 +112,7 @@ class ConvBNLayer(TheseusLayer):
                  filter_size,
                  stride=1,
                  groups=1,
+                 norm_decay=0.0005,
                  is_vd_mode=False,
                  act=None,
                  lr_mult=1.0,
@@ -130,11 +132,18 @@ class ConvBNLayer(TheseusLayer):
             weight_attr=ParamAttr(learning_rate=lr_mult),
             bias_attr=False,
             data_format=data_format)
-        self.bn = BatchNorm(
-            num_filters,
-            param_attr=ParamAttr(learning_rate=lr_mult),
-            bias_attr=ParamAttr(learning_rate=lr_mult),
-            data_layout=data_format)
+
+        param_attr = ParamAttr(
+            learning_rate=lr_mult,
+            regularizer=L2Decay(norm_decay),
+            trainable=True)
+        bias_attr = ParamAttr(
+            learning_rate=lr_mult,
+            regularizer=L2Decay(norm_decay),
+            trainable=True)
+
+        self.bn = BatchNorm2D(
+            num_filters, weight_attr=param_attr, bias_attr=bias_attr)
         self.relu = nn.ReLU()
 
     def forward(self, x):
@@ -190,6 +199,7 @@ class BottleneckBlock(TheseusLayer):
                 is_vd_mode=False if if_first else True,
                 lr_mult=lr_mult,
                 data_format=data_format)
+
         self.relu = nn.ReLU()
         self.shortcut = shortcut
 
