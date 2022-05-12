@@ -7,4 +7,3 @@ from ppcls.data.dataloader.icartoon_dataset import ICartoonDataset
 from ppcls.data.dataloader.mix_dataset import MixDataset
 from ppcls.data.dataloader.mix_sampler import MixSampler
 from ppcls.data.dataloader.pk_sampler import PKSampler
-from ppcls.data.dataloader.attr_dataset import AttrDataset
